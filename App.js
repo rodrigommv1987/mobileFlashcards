@@ -9,7 +9,7 @@ import NewDeckView from './components/NewDeckView'
 import StatusBarView from './components/StatusBarView'
 import { loadDB } from './data/loader'
 import { AppLoading } from 'expo'
-import { fetchDecks } from './utils/api'
+import { getDecks } from './utils/api'
 
 //preload asyncstorage with some dummy values
 loadDB()
@@ -45,15 +45,29 @@ const MainNavigator = createStackNavigator(
 
 export default class App extends React.Component {
 
+    state = {
+        decks: null
+    }
+
     componentDidMount = () => {
-        //fetchDecks().then(decks => {})
+        getDecks().then(decks => {
+            this.setState({
+                ...this.state,
+                decks: {
+                    ...this.state.decks,
+                    ...decks
+                }
+            })
+        })
     }
 
     render() {
+        const { decks } = this.state
+
         return (
             <View style={{ flex: 1 }}>
                 <StatusBarView backgroundColor={purple} barStyle="light-content" />
-                <MainNavigator screen />
+                {decks && <MainNavigator screenProps={decks} /> }
             </View>
         )
     }

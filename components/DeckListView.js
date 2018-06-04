@@ -1,40 +1,30 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import DeckListViewStyles from '../styles/DeckListViewStyles'
-import { fetchDecks } from '../utils/api'
 
 class DeckListView extends Component {
 
-    state = {
-        decks: {}
-    }
+    constructor(props) {
+        super(props);
 
-    componentDidMount = () => {
-        fetchDecks().then(decks => {
-            this.setState({
-                ...this.state,
-                decks: {
-                    ...this.state.decks,
-                    ...decks
-                }
-            })
-        })
-    }
-
-    a = () => {
+        this.state = {
+            decks: props.screenProps
+        };
     }
 
     render() {
         const { decks } = this.state
+        const { decksStyle, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
 
-        //console.log("deck vale" , decks)
         return (
-            <View>
+            <View style={decksStyle}>
                 {decks && Object.keys(decks).map(deck => {
-                    const {title} = decks[deck]
+                    const { title, questions } = decks[deck]
+
                     return (
-                        <TouchableOpacity key={title}>
-                            <Text>{title}</Text>
+                        <TouchableOpacity key={title} style={deckItemStyle}>
+                            <Text style={deckItemTextStyle}>{title}</Text>
+                            <Text>{`${questions.length} cards`}</Text>
                         </TouchableOpacity>
                     )
                 })}
