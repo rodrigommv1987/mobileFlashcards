@@ -3,7 +3,9 @@ import { STORAGE_KEY } from '../config/index'
 
 
 export function fetchDecks() {
-    return AsyncStorage.getItem(STORAGE_KEY).then( (decks) => JSON.parse(decks))
+    return AsyncStorage.getItem(STORAGE_KEY).then( (decks) => {
+        return JSON.parse(decks)
+    })
 }
 
 /*

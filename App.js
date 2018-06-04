@@ -44,24 +44,16 @@ const MainNavigator = createStackNavigator(
 )
 
 export default class App extends React.Component {
-    
-    state = {
-        decks:{}
-    }
 
     componentDidMount = () => {
-        fetchDecks().then(a => console.log(JSON.stringify(a)))
+        //fetchDecks().then(decks => {})
     }
 
     render() {
-
-        //const [decks] = this.state.decks
-        //todo: vincular con redux
-
         return (
             <View style={{ flex: 1 }}>
                 <StatusBarView backgroundColor={purple} barStyle="light-content" />
-                <MainNavigator screenProps={}/>
+                <MainNavigator screen />
             </View>
         )
     }

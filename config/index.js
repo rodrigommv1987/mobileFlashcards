@@ -1,1 +1,1 @@
-export const STORAGE_KEY = 'mobileFlashcards::decks'
+export const STORAGE_KEY = 'mobileFlashcards_decks'
