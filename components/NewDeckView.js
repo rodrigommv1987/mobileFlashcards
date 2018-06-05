@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ToastAndroid, Keyboard } from 'react-native'
 import NewDeckViewStyles from '../styles/NewDeckViewStyles'
 import { getDecks, saveDeckTitle } from "../utils/api";
 
@@ -8,44 +8,54 @@ class NewDeckView extends Component {
     constructor(props) {
         super(props);
 
+        const [decks] = props.screenProps
+
         this.state = {
             decks: props.screenProps,
-            newDeckName: '',
-            invalidName: false
+            newDeckName: ''
         };
     }
 
-    componentDidMount = () => {
-
+    cleanState () {
+        this.setState({newDeckName:''})
     }
 
     addNewDeck = () => {
-        const { newDeckName } = this.state
+        const { newDeckName } = this.state,
+            [,updateDeckState] = this.props.screenProps
 
         if (newDeckName === '') {
-            this.setState({ invalidName: true })
+            ToastAndroid.show('Hey!!! We need a name for the new deck!!', ToastAndroid.SHORT)
             return
         }
 
-        saveDeckTitle(newDeckName).then()
-
+        saveDeckTitle(newDeckName).then( () => {
+            getDecks().then(decks => {
+                updateDeckState(decks)
+                this.cleanState()
+                Keyboard.dismiss()
+                ToastAndroid.show('Deck saved successfully!', ToastAndroid.SHORT)
+            })
+        })
 
     }
 
     render() {
         const { containerStyle, titleStyle, inputStyle, submitStyle, invalidNameTextStyle } = NewDeckViewStyles
-        const { invalidName } = this.state
-        // console.log("newDeckView props" , this.props)
+        const { newDeckName } = this.state
+
         return (
             <View style={containerStyle}>
                 <Text style={titleStyle}>Enter New Deck Name:</Text>
-                <TextInput style={inputStyle} onChangeText={(text) => this.setState({ newDeckName: text })}></TextInput>
+                <TextInput 
+                    style={inputStyle}
+                    value={newDeckName}
+                    onChangeText={(text) => this.setState({ newDeckName: text })}
+                />
+
                 <TouchableOpacity onPress={this.addNewDeck}>
                     <Text>Submit</Text>
                 </TouchableOpacity>
-
-                <Text>{this.state.newDeckName}</Text>
-                {invalidName && <Text style={invalidNameTextStyle}>Hey!!! Put some text in there before submit!</Text>}
             </View>
         )
     }

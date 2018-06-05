@@ -61,13 +61,18 @@ export default class App extends React.Component {
         })
     }
 
+    updateDeckState = (decks) => {
+        //save deck to state (this will get passed down to children also)
+        this.setState({decks})
+    }
+
     render() {
         const { decks } = this.state
 
         return (
             <View style={{ flex: 1 }}>
                 <StatusBarView backgroundColor={purple} barStyle="light-content" />
-                {decks && <MainNavigator screenProps={decks} /> }
+                {decks && <MainNavigator screenProps={[decks, this.updateDeckState]} /> }
             </View>
         )
     }
