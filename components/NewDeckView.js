@@ -51,6 +51,7 @@ class NewDeckView extends Component {
                     style={inputStyle}
                     value={newDeckName}
                     onChangeText={(text) => this.setState({ newDeckName: text })}
+                    onKeyPress={(e) => console.log(e)}
                 />
 
                 <TouchableOpacity onPress={this.addNewDeck}>
