@@ -14,15 +14,12 @@ class DeckListView extends Component {
         }
     }
 
-    componentWillReceiveProps ({screenProps}) {
+    componentWillReceiveProps({ screenProps }) {
 
         const [decks] = screenProps
 
-        //console.log("componentWillReceiveProps", Object.keys(decks).length)
-        //console.log("componentWillReceiveProps", Object.keys(this.state.decks).length)
-
         //if deck in nextProps has different amount of keys, update state
-        if (Object.keys(decks).length !== Object.keys(this.state.decks).length) this.setState({decks})
+        if (Object.keys(decks).length !== Object.keys(this.state.decks).length) this.setState({ decks })
     }
 
     render() {
@@ -31,16 +28,15 @@ class DeckListView extends Component {
 
         return (
             <View style={decksStyle}>
-                            <TouchableOpacity onPress={() => {
-                                console.log(this.state)
-                            }}>
-                    <Text>log</Text>
-                </TouchableOpacity>
                 {decks && Object.keys(decks).map(deck => {
                     const { title, questions } = decks[deck]
-            
+
                     return (
-                        <TouchableOpacity key={title} style={deckItemStyle}>
+                        <TouchableOpacity 
+                            key={title} 
+                            style={deckItemStyle} 
+                            onPress={() => this.props.navigation.navigate('Deck',{ title })}>
+
                             <Text style={deckItemTextStyle}>{title}</Text>
                             <Text>{`${questions.length || 0} cards`}</Text>
                         </TouchableOpacity>

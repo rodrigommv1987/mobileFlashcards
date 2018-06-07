@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { orange } from "../utils/colors";
 
-const CardViewStyles = StyleSheet.create({
+const DeckViewStyles = StyleSheet.create({
     decksStyle: {
         flex:1,
         justifyContent: 'center',
@@ -19,4 +19,4 @@ const CardViewStyles = StyleSheet.create({
     }
 })
 
-export default CardViewStyles
+export default DeckViewStyles

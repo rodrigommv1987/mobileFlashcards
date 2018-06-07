@@ -1,12 +1,13 @@
 import React from 'react'
 import { Text, View, Platform } from 'react-native'
 import { createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
-import { purple, white } from './utils/colors'
+import { purple, white, red } from './utils/colors'
 import AppStyles from './styles/AppStyles'
 import { FontAwesome, Foundation } from '@expo/vector-icons'
 import DeckListView from './components/DeckListView'
 import NewDeckView from './components/NewDeckView'
 import StatusBarView from './components/StatusBarView'
+import DeckView from './components/DeckView'
 import { loadDB } from './data/loader'
 import { AppLoading } from 'expo'
 import { getDecks } from './utils/api'
@@ -34,12 +35,21 @@ const Tabs = createMaterialTopTabNavigator(
     {
         tabBarOptions: {
             showIcon: true,
+            activeTintColor: red
         }
     }
 )
 
 const MainNavigator = createStackNavigator(
-    { Home: Tabs },
+    { 
+        Home: {
+            screen: Tabs,
+            title: 'Home'
+        },
+        Deck: {
+            screen: DeckView
+        }
+    },
     { headerMode: 'none' }
 )
 

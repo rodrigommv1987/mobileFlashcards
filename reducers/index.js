@@ -10,7 +10,6 @@ function decks(state = {}, action) {
                     ...action.deck
                 }
             }
-            console.log("ADD_DECK", newState)
             return newState
         default:
             return state
