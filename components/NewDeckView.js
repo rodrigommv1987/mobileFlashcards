@@ -13,7 +13,7 @@ class NewDeckView extends Component {
         this.state = {
             decks: props.screenProps,
             newDeckName: ''
-        };
+        }
     }
 
     cleanState () {

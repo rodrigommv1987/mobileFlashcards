@@ -8,6 +8,7 @@ import DeckListView from './components/DeckListView'
 import NewDeckView from './components/NewDeckView'
 import StatusBarView from './components/StatusBarView'
 import DeckView from './components/DeckView'
+import AddCardView from './components/AddCardView'
 import { loadDB } from './data/loader'
 import { AppLoading } from 'expo'
 import { getDecks } from './utils/api'
@@ -41,13 +42,16 @@ const Tabs = createMaterialTopTabNavigator(
 )
 
 const MainNavigator = createStackNavigator(
-    { 
+    {
         Home: {
             screen: Tabs,
             title: 'Home'
         },
         Deck: {
             screen: DeckView
+        },
+        AddCardView: {
+            screen: AddCardView
         }
     },
     { headerMode: 'none' }
@@ -73,7 +77,23 @@ export default class App extends React.Component {
 
     updateDeckState = (decks) => {
         //save deck to state (this will get passed down to children also)
-        this.setState({decks})
+        this.setState({ decks })
+    }
+
+    addQuestionToDeck = (deckTitle, question) => {
+
+        /*deck.questions.push(question)
+        
+        const a = {
+            ...this.state,
+            decks:{
+                ...this.state.decks,
+                [deck.title]:deck
+            }
+        }*/
+        console.log("deckname", deckTitle)
+
+        //this.setState()
     }
 
     render() {
@@ -82,7 +102,7 @@ export default class App extends React.Component {
         return (
             <View style={{ flex: 1 }}>
                 <StatusBarView backgroundColor={purple} barStyle="light-content" />
-                {decks && <MainNavigator screenProps={[decks, this.updateDeckState]} /> }
+                {decks && <MainNavigator screenProps={[decks, this.updateDeckState, this.addQuestionToDeck]} />}
             </View>
         )
     }

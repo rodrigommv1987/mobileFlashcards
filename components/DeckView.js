@@ -7,15 +7,28 @@ class DeckView extends Component {
     constructor(props) {
         super(props);
 
+        const [decks] = props.screenProps,
+            deckName = props.navigation.state.params.title
+
+        this.state = {
+            deck: decks[deckName]
+        }
     }
 
     render() {
-        //const { decks } = this.state
+        const { deck } = this.state
         //const { decksStyle, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
 
         return (
             <View>
-                <Text>DeckView for {this.props.navigation.state.params.title}</Text>
+                <Text>DeckView for {deck.title}</Text>
+                <Text>{deck.questions.length} cards</Text>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddCardView', { title: deck.title })}>
+                    <Text>Add Card</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('QuizView')}>
+                    <Text>Start Quiz</Text>
+                </TouchableOpacity>
             </View>
         )
     }
