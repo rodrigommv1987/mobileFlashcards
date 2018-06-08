@@ -7,7 +7,7 @@ class DeckView extends Component {
     constructor(props) {
         super(props);
 
-        const [decks] = props.screenProps,
+        const { decks } = props.screenProps,
             deckName = props.navigation.state.params.title
 
         this.state = {
@@ -15,10 +15,16 @@ class DeckView extends Component {
         }
     }
 
+    componentWillReceiveProps({ screenProps }) {
+        const newDeck = screenProps.decks[this.state.deck.title]
+
+        //if deck in nextProps has different amount of keys, update state
+        if (newDeck.length !== this.state.deck.questions.length) this.setState({ deck:newDeck })
+    }
+
     render() {
         const { deck } = this.state
         //const { decksStyle, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
-
         return (
             <View>
                 <Text>DeckView for {deck.title}</Text>

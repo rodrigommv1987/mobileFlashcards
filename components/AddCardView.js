@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ToastAndroid } from 'react-native'
 import DeckViewStyles from '../styles/DeckViewStyles'
+import { addCardToDeck as APIaddCardToDeck, getDecks as APIgetDecks } from "../utils/api"
 
 class AddCardView extends Component {
 
@@ -15,10 +16,20 @@ class AddCardView extends Component {
     }
 
     addQuestionToDeck = () => {
-        const [,,addQuestion] = this.props.screenProps,
-            { deckTitle, question, answer} = this.state
-
-        addQuestion(deckTitle, {question,answer})
+        const { updateDeckState } = this.props.screenProps,
+            { deckTitle, question, answer } = this.state
+        
+        //save question to asyncstorage
+        APIaddCardToDeck(deckTitle, { question, answer }).then( () => {
+            //get fresh copy of all decks
+            APIgetDecks().then(decks => {
+                //save decks to internal state
+                updateDeckState(decks, () => {
+                    ToastAndroid.show('Card added!', ToastAndroid.SHORT)
+                    this.props.navigation.navigate('Deck', {title:deckTitle})
+                })
+            })
+        })
     }
 
     render() {
@@ -28,12 +39,12 @@ class AddCardView extends Component {
         return (
             <View>
                 <Text>AddCardView</Text>
-                <TextInput 
+                <TextInput
                     value={question}
                     placeholder="Enter question here..."
                     onChangeText={(text) => this.setState({ question: text })}
                 />
-                <TextInput 
+                <TextInput
                     value={answer}
                     placeholder="Enter answer here..."
                     onChangeText={(text) => this.setState({ answer: text })}

@@ -75,25 +75,11 @@ export default class App extends React.Component {
         })
     }
 
-    updateDeckState = (decks) => {
+    updateDeckState = (decks, cb) => {
         //save deck to state (this will get passed down to children also)
         this.setState({ decks })
-    }
 
-    addQuestionToDeck = (deckTitle, question) => {
-
-        /*deck.questions.push(question)
-        
-        const a = {
-            ...this.state,
-            decks:{
-                ...this.state.decks,
-                [deck.title]:deck
-            }
-        }*/
-        console.log("deckname", deckTitle)
-
-        //this.setState()
+        if (cb) cb()
     }
 
     render() {
@@ -102,7 +88,10 @@ export default class App extends React.Component {
         return (
             <View style={{ flex: 1 }}>
                 <StatusBarView backgroundColor={purple} barStyle="light-content" />
-                {decks && <MainNavigator screenProps={[decks, this.updateDeckState, this.addQuestionToDeck]} />}
+                {decks && <MainNavigator screenProps={{
+                    decks,
+                    updateDeckState:this.updateDeckState
+                }} />}
             </View>
         )
     }
