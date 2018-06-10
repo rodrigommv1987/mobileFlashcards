@@ -5,6 +5,10 @@ import { getDecks as APIgetDecks, saveDeckTitle as APIsaveDeckTitle } from "../u
 
 class NewDeckView extends Component {
 
+    static navigationOptions = {
+        title: 'Add Deck',
+    }
+
     constructor(props) {
         super(props);
 
@@ -38,6 +42,8 @@ class NewDeckView extends Component {
                 this.cleanState()
                 Keyboard.dismiss()
                 ToastAndroid.show('Deck saved!', ToastAndroid.SHORT)
+                //route to newly created deck
+                this.props.navigation.navigate('Deck', { title:newDeckName })
             })
         })
 

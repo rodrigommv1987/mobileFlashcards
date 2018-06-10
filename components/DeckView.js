@@ -4,6 +4,12 @@ import DeckViewStyles from '../styles/DeckViewStyles'
 
 class DeckView extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: navigation.getParam('title'),
+        }
+    }
+
     constructor(props) {
         super(props);
 
@@ -19,7 +25,7 @@ class DeckView extends Component {
         const newDeck = screenProps.decks[this.state.deck.title]
 
         //if deck in nextProps has different amount of keys, update state
-        if (newDeck.length !== this.state.deck.questions.length) this.setState({ deck:newDeck })
+        if (newDeck.length !== this.state.deck.questions.length) this.setState({ deck: newDeck })
     }
 
     render() {
@@ -32,8 +38,8 @@ class DeckView extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('AddCardView', { title: deck.title })}>
                     <Text>Add Card</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('QuizView')}>
-                    <Text>Start Quiz</Text>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('QuizView', { deck })}>
+                    <Text>Start Quiz!</Text>
                 </TouchableOpacity>
             </View>
         )

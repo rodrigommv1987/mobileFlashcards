@@ -1,10 +1,17 @@
 import { AsyncStorage } from 'react-native'
-import { STORAGE_KEY } from '../config/index'
+import { STORAGE_KEY, NOTIFICATION_KEY, NOTIFICATION_DEFAULT } from '../config/index'
+import { Notifications, Permissions } from 'expo'
 
 
 export function getDecks() {
     return AsyncStorage.getItem(STORAGE_KEY).then(decks => {
         return JSON.parse(decks)
+    })
+}
+
+export function getDeck(title) {
+    return AsyncStorage.getItem(STORAGE_KEY).then(decks => {
+        return (JSON.parse(decks))[title]
     })
 }
 
@@ -25,27 +32,50 @@ export function addCardToDeck(title, card) {
     })
 }
 
-/*
-getDecks: return all of the decks along with their titles, questions, and answers. 
-getDeck: take in a single id argument and return the deck associated with that id. 
-saveDeckTitle: take in a single title argument and add it to the decks. 
-addCardToDeck: take in two arguments, title and card, and will add the card to the list of questions for the deck with the associated title. 
-
-*/
-
-/*
-export function submitEntry({ entry, key }) {
-    return AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify({
-        [key]: entry
-    }))
+export function clearLocalNotification() {
+    return AsyncStorage.removeItem(NOTIFICATION_KEY).then(Notifications.cancelAllScheduledNotificationsAsync)
 }
 
-export function removeEntry(key) {
-    return AsyncStorage.getItem(STORAGE_KEY)
-        .then((results) => {
-            const data = JSON.parse(results)
-            data[key] = undefined
-            delete data[key]
-            AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+export function setLocalNotification(when = NOTIFICATION_DEFAULT, force = false) {
+    AsyncStorage.getItem(NOTIFICATION_KEY)
+        .then(JSON.parse)
+        .then((data) => {
+            //if there's no notification set for today
+            if (force || (data === null)) {
+                Permissions.askAsync(Permissions.NOTIFICATIONS).then(({ status }) => {
+                    if (status === 'granted') {
+                        Notifications.cancelAllScheduledNotificationsAsync()
+
+                        let tomorrow = new Date()
+                        tomorrow.setDate(when.startTomorrow ? tomorrow.getDate() + 1 : tomorrow.getDate())
+                        tomorrow.setHours(when.hour)
+                        tomorrow.setMinutes(when.minute)
+                        tomorrow.setSeconds(0)
+                        console.log("notification scheduled for ",tomorrow)
+
+                        Notifications.scheduleLocalNotificationAsync(
+                            {
+                                title: 'Log your stats!',
+                                body: "👋 don't forget to log your stats for today!",
+                                ios: {
+                                    sound: true,
+                                },
+                                android: {
+                                    sound: true,
+                                    priority: 'high',
+                                    sticky: false,
+                                    vibrate: true,
+                                }
+                            },
+                            {
+                                time: tomorrow,
+                                repeat: 'day',
+                            }
+                        )
+
+                        AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+                    }
+                })
+            }
         })
-}*/
+}

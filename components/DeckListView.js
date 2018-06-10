@@ -4,6 +4,10 @@ import DeckListViewStyles from '../styles/DeckListViewStyles'
 
 class DeckListView extends Component {
 
+    static navigationOptions = {
+        title: 'Deck List',
+    }
+
     constructor(props) {
         super(props);
 

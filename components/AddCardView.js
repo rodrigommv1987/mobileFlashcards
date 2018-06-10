@@ -5,6 +5,12 @@ import { addCardToDeck as APIaddCardToDeck, getDecks as APIgetDecks } from "../u
 
 class AddCardView extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: `Adding card to ${navigation.getParam('title')}`,
+        }
+    }
+
     constructor(props) {
         super(props)
 
@@ -38,7 +44,6 @@ class AddCardView extends Component {
 
         return (
             <View>
-                <Text>AddCardView</Text>
                 <TextInput
                     value={question}
                     placeholder="Enter question here..."
