@@ -12,8 +12,9 @@ import AddCardView from './components/AddCardView'
 import QuizView from './components/QuizView'
 import ScheduleNotificationView from './components/ScheduleNotificationView'
 import { loadDB } from './data/loader'
-import { getDecks, setLocalNotification, clearLocalNotification } from './utils/api'
+import { getDecks, clearLocalNotification } from './utils/api'
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { initScheduler } from './utils/scheduler'
 
 //preload asyncstorage with some dummy values
 loadDB()
@@ -87,8 +88,8 @@ export default class App extends React.Component {
     }
 
     componentDidMount = () => {
+        initScheduler();
         getDecks().then(decks => this.setState({ decks }))
-        setLocalNotification()
     }
 
     updateDeckState = (decks, cb) => {

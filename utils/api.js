@@ -2,7 +2,6 @@ import { AsyncStorage } from 'react-native'
 import { STORAGE_KEY, NOTIFICATION_KEY, NOTIFICATION_DEFAULT } from '../config/index'
 import { Notifications, Permissions } from 'expo'
 
-
 export function getDecks() {
     return AsyncStorage.getItem(STORAGE_KEY).then(decks => {
         return JSON.parse(decks)
@@ -32,38 +31,34 @@ export function addCardToDeck(title, card) {
     })
 }
 
-export function clearLocalNotification() {
-    return AsyncStorage.getItem(NOTIFICATION_KEY)
-        .then(JSON.parse)
-        .then(notificationData => {
-            console.log("notificationData",notificationData)
-            notificationData.notificationSet = false
-            console.log(JSON.stringify(notificationData))
-            return AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(notificationData))
-        })
-        .then(Notifications.cancelAllScheduledNotificationsAsync)
+export function getNotificationData() {
+    return AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
 }
 
-export function setLocalNotification(when = NOTIFICATION_DEFAULT, force = false) {
-    AsyncStorage.getItem(NOTIFICATION_KEY)
-        .then((a) => {
-            console.log(a)
-            return JSON.parse(a)
+export function clearLocalNotification() {
+    return Notifications.cancelAllScheduledNotificationsAsync()
+        .then(() => {
+            AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify({
+                notificationSet: false
+            }))
         })
-        .then((data) => {
-            console.log("setLocalNotification data es: ",data)
-            //if there's no notification set for today
-            if (force || (data === null)) {
-                Permissions.askAsync(Permissions.NOTIFICATIONS).then(({ status }) => {
-                    if (status === 'granted') {
-                        Notifications.cancelAllScheduledNotificationsAsync()
+}
 
+export function setLocalNotification(when) {
+    Permissions.askAsync(Permissions.NOTIFICATIONS)
+        .then(({ status }) => {
+            if (status === 'granted') {
+                clearLocalNotification()
+                    .then(() => {
                         let tomorrow = new Date()
                         tomorrow.setDate(when.startTomorrow ? tomorrow.getDate() + 1 : tomorrow.getDate())
                         tomorrow.setHours(when.hour)
                         tomorrow.setMinutes(when.minute)
                         tomorrow.setSeconds(0)
-                        console.log("notification scheduled for ",tomorrow)
+
+                        //if the notification is being set for today but before current time, set it for tomorrow anyway
+                        if (tomorrow.getTime() < (new Date()).getTime()) tomorrow.setDate(tomorrow.getDate()+1)
+                        console.log("notification scheduled for ", tomorrow)
 
                         Notifications.scheduleLocalNotificationAsync(
                             {
@@ -84,15 +79,13 @@ export function setLocalNotification(when = NOTIFICATION_DEFAULT, force = false)
                                 repeat: 'day',
                             }
                         )
-                        AsyncStorage.getItem(NOTIFICATION_KEY)
-                            .then((a) => console.log(a))
-                            /*.then(notificationData => {
-                                console.log(notificationData)
-                                notificationData.notificationSet = true
-                                return AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(notificationData))
-                            })*/
-                    }
-                })
+                        return AsyncStorage.mergeItem(NOTIFICATION_KEY, JSON.stringify({
+                            notificationSet: true,
+                            ...when
+                        }))
+
+                    })
             }
         })
+
 }

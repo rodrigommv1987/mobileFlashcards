@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Slider, Switch } from 'react-native'
 import ScheduleNotificationStyle from '../styles/ScheduleNotificationStyle'
-import { setLocalNotification } from "../utils/api"
-import { NOTIFICATION_DEFAULT } from "../config";
+import { NOTIFICATION_DEFAULT } from "../config"
+import { getNotificationData, setLocalNotification } from "../utils/api";
 
 class ScheduleNotificationView extends Component {
 
@@ -14,6 +14,16 @@ class ScheduleNotificationView extends Component {
         hour: NOTIFICATION_DEFAULT.hour,
         minute: NOTIFICATION_DEFAULT.minute,
         startTomorrow: NOTIFICATION_DEFAULT.startTomorrow
+    }
+
+    componentDidMount() {
+        getNotificationData().then( nData => {
+            nData.notificationSet ? this.setState({
+                hour:nData.hour,
+                minute:nData.minute,
+                startTomorrow:nData.startTomorrow
+            }) : this.setState({NOTIFICATION_DEFAULT})
+        })
     }
 
     render() {
