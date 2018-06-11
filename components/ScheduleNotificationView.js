@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Slider, Switch } from 'react-native'
 import ScheduleNotificationStyle from '../styles/ScheduleNotificationStyle'
 import { setLocalNotification } from "../utils/api"
+import { NOTIFICATION_DEFAULT } from "../config";
 
 class ScheduleNotificationView extends Component {
 
@@ -10,9 +11,9 @@ class ScheduleNotificationView extends Component {
     }
 
     state = {
-        hour: 0,
-        minute: 0,
-        startTomorrow: true
+        hour: NOTIFICATION_DEFAULT.hour,
+        minute: NOTIFICATION_DEFAULT.minute,
+        startTomorrow: NOTIFICATION_DEFAULT.startTomorrow
     }
 
     render() {
@@ -29,7 +30,7 @@ class ScheduleNotificationView extends Component {
                     <Slider
                         style={{ flex: 1 }}
                         step={1}
-                        value={0}
+                        value={hour}
                         maximumValue={23}
                         minimumValue={0}
                         onValueChange={hour => this.setState({ hour })}
@@ -43,7 +44,7 @@ class ScheduleNotificationView extends Component {
                     <Slider
                         style={{ flex: 1 }}
                         step={1}
-                        value={0}
+                        value={minute}
                         maximumValue={59}
                         minimumValue={0}
                         onValueChange={minute => this.setState({ minute })}

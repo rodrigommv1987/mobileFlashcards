@@ -33,13 +33,25 @@ export function addCardToDeck(title, card) {
 }
 
 export function clearLocalNotification() {
-    return AsyncStorage.removeItem(NOTIFICATION_KEY).then(Notifications.cancelAllScheduledNotificationsAsync)
+    return AsyncStorage.getItem(NOTIFICATION_KEY)
+        .then(JSON.parse)
+        .then(notificationData => {
+            console.log("notificationData",notificationData)
+            notificationData.notificationSet = false
+            console.log(JSON.stringify(notificationData))
+            return AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(notificationData))
+        })
+        .then(Notifications.cancelAllScheduledNotificationsAsync)
 }
 
 export function setLocalNotification(when = NOTIFICATION_DEFAULT, force = false) {
     AsyncStorage.getItem(NOTIFICATION_KEY)
-        .then(JSON.parse)
+        .then((a) => {
+            console.log(a)
+            return JSON.parse(a)
+        })
         .then((data) => {
+            console.log("setLocalNotification data es: ",data)
             //if there's no notification set for today
             if (force || (data === null)) {
                 Permissions.askAsync(Permissions.NOTIFICATIONS).then(({ status }) => {
@@ -55,8 +67,8 @@ export function setLocalNotification(when = NOTIFICATION_DEFAULT, force = false)
 
                         Notifications.scheduleLocalNotificationAsync(
                             {
-                                title: 'Log your stats!',
-                                body: "👋 don't forget to log your stats for today!",
+                                title: 'Have you studied today???',
+                                body: "Quiz yourself today if you haven't!!!",
                                 ios: {
                                     sound: true,
                                 },
@@ -72,8 +84,13 @@ export function setLocalNotification(when = NOTIFICATION_DEFAULT, force = false)
                                 repeat: 'day',
                             }
                         )
-
-                        AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+                        AsyncStorage.getItem(NOTIFICATION_KEY)
+                            .then((a) => console.log(a))
+                            /*.then(notificationData => {
+                                console.log(notificationData)
+                                notificationData.notificationSet = true
+                                return AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(notificationData))
+                            })*/
                     }
                 })
             }

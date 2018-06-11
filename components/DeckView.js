@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ToastAndroid } from 'react-native'
 import DeckViewStyles from '../styles/DeckViewStyles'
 
 class DeckView extends Component {
@@ -38,7 +38,13 @@ class DeckView extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('AddCardView', { title: deck.title })}>
                     <Text>Add Card</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('QuizView', { deck })}>
+                <TouchableOpacity onPress={() => {
+                    (deck.questions.length > 0) ?
+                        this.props.navigation.navigate('QuizView', { deck })
+                        :
+                        ToastAndroid.show('Please, add at least one card to start.', ToastAndroid.SHORT)
+                }
+                }>
                     <Text>Start Quiz!</Text>
                 </TouchableOpacity>
             </View>

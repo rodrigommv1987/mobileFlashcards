@@ -1,9 +1,9 @@
 import React from 'react'
-import { Text, View, Platform, TouchableOpacity, AsyncStorage } from 'react-native'
+import { Text, View, TouchableOpacity, AsyncStorage } from 'react-native'
 import { createStackNavigator } from 'react-navigation'
 import { purple, white, red } from './utils/colors'
 import AppStyles from './styles/AppStyles'
-import { FontAwesome, Foundation } from '@expo/vector-icons'
+import { Foundation } from '@expo/vector-icons'
 import DeckListView from './components/DeckListView'
 import NewDeckView from './components/NewDeckView'
 import StatusBarView from './components/StatusBarView'
@@ -12,7 +12,6 @@ import AddCardView from './components/AddCardView'
 import QuizView from './components/QuizView'
 import ScheduleNotificationView from './components/ScheduleNotificationView'
 import { loadDB } from './data/loader'
-import { Notifications, Permissions } from 'expo'
 import { getDecks, setLocalNotification, clearLocalNotification } from './utils/api'
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
@@ -89,6 +88,7 @@ export default class App extends React.Component {
 
     componentDidMount = () => {
         getDecks().then(decks => this.setState({ decks }))
+        setLocalNotification()
     }
 
     updateDeckState = (decks, cb) => {
