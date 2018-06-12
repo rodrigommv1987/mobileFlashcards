@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, ToastAndroid } from 'react-native'
-import DeckViewStyles from '../styles/DeckViewStyles'
+import AddCardStyles from '../styles/AddCardStyles'
 import { addCardToDeck as APIaddCardToDeck, getDecks as APIgetDecks } from "../utils/api"
 
 class AddCardView extends Component {
@@ -40,10 +40,10 @@ class AddCardView extends Component {
 
     render() {
         const { question, answer } = this.state
-        //const { decksStyle, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
+        const { container } = AddCardStyles
 
         return (
-            <View>
+            <View  >
                 <TextInput
                     value={question}
                     placeholder="Enter question here..."

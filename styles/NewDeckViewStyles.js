@@ -1,33 +1,32 @@
 import { StyleSheet } from 'react-native'
-import { black, red } from "../utils/colors";
+import { primary, secondary, tertiary } from "../styles/_sharedStyles"
 
 const NewDeckViewStyles = StyleSheet.create({
-    containerStyle:{
+    container:{
         flex:1,
         alignItems:'center',
         justifyContent:'flex-start',
-        backgroundColor:'#cde456'
+        backgroundColor:secondary
     },
-    titleStyle:{
+    title:{
         fontSize:32,
-        paddingTop:30
+        marginTop:50
     },
-    inputStyle:{
-        width:200,
+    input:{
+        alignSelf:'stretch',
         height:40,
-        padding:8,
-        borderWidth:1,
-        paddingTop:10
+        marginLeft:40,
+        marginRight:40,
+        marginTop:10,
     },
-    submitStyle:{
+    submit:{
+        marginTop:30,
         width:200,
-        height:40,
-        padding:8,
-        paddingTop:5
-    },
-    invalidNameTextStyle:{
-        fontWeight:'bold',
-        fontSize:35
+        textAlign:'center',
+        textAlignVertical:'center',
+        backgroundColor:tertiary,
+        borderRadius:7,
+        height:50,
     }
 })
 

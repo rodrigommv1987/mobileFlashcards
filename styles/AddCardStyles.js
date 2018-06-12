@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { primary, secondary, tertiary } from "../styles/_sharedStyles";
 
-const DeckListViewStyles = StyleSheet.create({
+const AddCardStyles = StyleSheet.create({
     container: {
         flex:1,
         justifyContent: 'center',
@@ -25,4 +25,4 @@ const DeckListViewStyles = StyleSheet.create({
     }
 })
 
-export default DeckListViewStyles
+export default AddCardStyles

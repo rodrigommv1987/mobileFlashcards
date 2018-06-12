@@ -1,23 +1,43 @@
 import { StyleSheet } from 'react-native'
-import { black, red } from "../utils/colors";
+import { primary, secondary, tertiary } from "../styles/_sharedStyles";
 
 const ScheduleNotificationView = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:secondary
+    },
     row: {
+        flex: 1,
         flexDirection: 'row',
-        flex: 1,
         alignItems: 'center',
+        justifyContent: 'space-between',
+        marginLeft: 20,
+        marginRight: 20,
     },
-    field: {
-        width: 155,
-        justifyContent: 'center',
-        alignItems: 'center'
+    labelContainer: {
+        width: 170
     },
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: 30,
-        marginRight: 30,
+    label: {
+        fontSize: 24,
+        textAlign: 'left'
+    },
+    slider: {
+        flex: 1
+    },
+    valueLabel: {
+        fontSize: 24,
+        textAlign: 'center',
+        width:30
+    },
+    save:{
+        width:200,
+        textAlign:'center',
+        textAlignVertical:'center',
+        backgroundColor:tertiary,
+        borderRadius:7,
+        height:50,
     }
 })
 

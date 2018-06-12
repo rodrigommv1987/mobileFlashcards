@@ -1,20 +1,26 @@
+//react
 import React from 'react'
-import { Text, View, TouchableOpacity, AsyncStorage } from 'react-native'
+import { View } from 'react-native'
 import { createStackNavigator } from 'react-navigation'
-import { purple, white, red } from './utils/colors'
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+
+//style
 import AppStyles from './styles/AppStyles'
 import { Foundation } from '@expo/vector-icons'
-import DeckListView from './components/DeckListView'
-import NewDeckView from './components/NewDeckView'
-import StatusBarView from './components/StatusBarView'
-import DeckView from './components/DeckView'
+
+//utils
+import { getDecks } from './utils/api'
+import { initScheduler } from './utils/scheduler'
+import { loadDB } from './data/loader'
+
+//app components
 import AddCardView from './components/AddCardView'
+import DeckListView from './components/DeckListView'
+import DeckView from './components/DeckView'
+import NewDeckView from './components/NewDeckView'
 import QuizView from './components/QuizView'
 import ScheduleNotificationView from './components/ScheduleNotificationView'
-import { loadDB } from './data/loader'
-import { getDecks, clearLocalNotification } from './utils/api'
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
-import { initScheduler } from './utils/scheduler'
+import StatusBarView from './components/StatusBarView'
 
 //preload asyncstorage with some dummy values
 loadDB()
@@ -45,10 +51,10 @@ const Tabs = createMaterialBottomTabNavigator(
         }
     },
     {
-        tabBarOptions: {
-            showIcon: true,
-            activeTintColor: red,
-        }
+        initialRouteName :"ScheduleNotification",
+        shifting:true,
+        tabBarOptions: { showIcon: true },        
+        barStyle: AppStyles.tabBar,
     }
 )
 
@@ -65,15 +71,14 @@ const MainNavigator = createStackNavigator(
             screen: AddCardView
         },
         QuizView: {
-            screen: QuizView
+            screen: QuizView,
+            navigationOptions: { title: 'Quiz Time!' }
         }
     },
     {
         navigationOptions: {
-            headerStyle: {
-                backgroundColor: '#f4511e'
-            },
-            headerTintColor: '#fff',
+            headerStyle: AppStyles.navigation,
+            headerTintColor: '#222',
             headerTitleStyle: {
                 fontWeight: 'bold'
             }
@@ -99,14 +104,18 @@ export default class App extends React.Component {
 
     render() {
         const { decks } = this.state
+        const { container } = AppStyles
 
         return (
-            <View style={{ flex: 1 }}>
-                <StatusBarView backgroundColor={purple} barStyle="light-content" />
+            <View style={container}>
+                <StatusBarView />
                 {decks && <MainNavigator screenProps={{
                     decks,
                     updateDeckState: this.updateDeckState
                 }} />}
+                
+                {/*
+
                 <TouchableOpacity onPress={() => {
                     console.log(new Date())
                 }}>
@@ -122,6 +131,8 @@ export default class App extends React.Component {
                 <TouchableOpacity onPress={clearLocalNotification}>
                     <Text>clear all notifications</Text>
                 </TouchableOpacity>
+            
+                */}
             </View>
         )
     }

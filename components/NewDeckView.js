@@ -50,20 +50,19 @@ class NewDeckView extends Component {
     }
 
     render() {
-        const { containerStyle, titleStyle, inputStyle, submitStyle, invalidNameTextStyle } = NewDeckViewStyles
+        const { container, title, input, submit } = NewDeckViewStyles
         const { newDeckName } = this.state
 
         return (
-            <View style={containerStyle}>
-                <Text style={titleStyle}>Enter New Deck Name:</Text>
+            <View style={container}>
+                <Text style={title}>New Deck Name:</Text>
                 <TextInput
-                    style={inputStyle}
+                    style={input}
                     value={newDeckName}
                     onChangeText={(text) => this.setState({ newDeckName: text })}
                 />
-
                 <TouchableOpacity onPress={this.addNewDeck}>
-                    <Text>Submit</Text>
+                    <Text style={submit}>Submit</Text>
                 </TouchableOpacity>
             </View>
         )

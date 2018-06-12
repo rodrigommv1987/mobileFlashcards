@@ -1,12 +1,11 @@
+//react
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
+
+//style
 import DeckListViewStyles from '../styles/DeckListViewStyles'
 
 class DeckListView extends Component {
-
-    static navigationOptions = {
-        title: 'Deck List',
-    }
 
     constructor(props) {
         super(props);
@@ -28,10 +27,10 @@ class DeckListView extends Component {
 
     render() {
         const { decks } = this.state
-        const { decksStyle, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
+        const { container, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
 
         return (
-            <View style={decksStyle}>
+            <View style={container}>
                 {decks && Object.keys(decks).map(deck => {
                     const { title, questions } = decks[deck]
 

@@ -4,10 +4,6 @@ import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
 
 class QuizView extends Component {
 
-    static navigationOptions = {
-        title: 'Quiz Time!'
-    }
-
     constructor(props) {
         super(props);
 
@@ -35,12 +31,8 @@ class QuizView extends Component {
     next = () => {
         const { currentQuestionNumber, deck } = this.state;
 
-        //are there any more questions???
-        (currentQuestionNumber !== deck.questions.length) ?
-            //go to next question
-            this.setState({ currentQuestionNumber: (currentQuestionNumber + 1) })
-            :
-            null
+        //go to next question if there are any left
+        if (currentQuestionNumber !== deck.questions.length) this.setState({ currentQuestionNumber: (currentQuestionNumber + 1) })
     }
 
     showCard = () => {

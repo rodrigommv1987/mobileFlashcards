@@ -1,14 +1,17 @@
+//react
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Slider, Switch } from 'react-native'
+
+//style
 import ScheduleNotificationStyle from '../styles/ScheduleNotificationStyle'
+
+//config
 import { NOTIFICATION_DEFAULT } from "../config"
+
+//utils
 import { getNotificationData, setLocalNotification } from "../utils/api";
 
 class ScheduleNotificationView extends Component {
-
-    static navigationOptions = {
-        title: 'Schedule Notification',
-    }
 
     state = {
         hour: NOTIFICATION_DEFAULT.hour,
@@ -17,56 +20,54 @@ class ScheduleNotificationView extends Component {
     }
 
     componentDidMount() {
-        getNotificationData().then( nData => {
+        getNotificationData().then(nData => {
             nData.notificationSet ? this.setState({
-                hour:nData.hour,
-                minute:nData.minute,
-                startTomorrow:nData.startTomorrow
-            }) : this.setState({NOTIFICATION_DEFAULT})
+                hour: nData.hour,
+                minute: nData.minute,
+                startTomorrow: nData.startTomorrow
+            }) : this.setState({ NOTIFICATION_DEFAULT })
         })
     }
 
     render() {
-        const { center, field, row } = ScheduleNotificationStyle,
+        const { container, label, labelContainer, row, slider, valueLabel, save } = ScheduleNotificationStyle,
             { hour, minute, startTomorrow } = this.state
-        //const { decksStyle, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
 
         return (
-            <View style={center}>
+            <View style={container}>
                 <View style={row}>
-                    <View style={field}>
-                        <Text style={{ fontSize: 24, textAlign: 'center' }}>Hour</Text>
+                    <View style={labelContainer}>
+                        <Text style={label}>Hour</Text>
                     </View>
                     <Slider
-                        style={{ flex: 1 }}
+                        style={slider}
                         step={1}
                         value={hour}
                         maximumValue={23}
                         minimumValue={0}
                         onValueChange={hour => this.setState({ hour })}
                     />
-                    <Text style={{ fontSize: 24, textAlign: 'center' }}>{hour}</Text>
+                    <Text style={valueLabel}>{hour}</Text>
                 </View>
                 <View style={row}>
-                    <View style={field}>
-                        <Text style={{ fontSize: 24, textAlign: 'center' }}>Minute</Text>
+                    <View style={labelContainer}>
+                        <Text style={label}>Minute</Text>
                     </View>
                     <Slider
-                        style={{ flex: 1 }}
+                        style={slider}
                         step={1}
                         value={minute}
                         maximumValue={59}
                         minimumValue={0}
                         onValueChange={minute => this.setState({ minute })}
                     />
-                    <Text style={{ fontSize: 24, textAlign: 'center' }}>{minute}</Text>
+                    <Text style={valueLabel}>{minute}</Text>
                 </View>
-
                 <View style={row}>
-                    <View style={field}>
-                        <Text style={{ fontSize: 24, textAlign: 'center' }}>Schedule for Tomorrow</Text>
+                    <View style={labelContainer}>
+                        <Text style={label}>Start Tomorrow</Text>
                     </View>
-                    <Switch style={{ flex: 1 }}
+                    <Switch style={slider}
                         value={startTomorrow}
                         onValueChange={startTomorrow => this.setState({ startTomorrow })}
                     />
@@ -77,7 +78,7 @@ class ScheduleNotificationView extends Component {
                         minute: this.state.minute,
                         startTomorrow: this.state.startTomorrow
                     }, true)}>
-                        <Text>Save</Text>
+                        <Text style={save}>Save</Text>
                     </TouchableOpacity>
                 </View>
             </View>
