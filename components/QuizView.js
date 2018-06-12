@@ -1,6 +1,9 @@
+//react
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
-//import QuizViewStyles from '../styles/QuizViewStyles'
+import { View, Text, TouchableOpacity } from 'react-native'
+
+//style
+import QuizViewStyles from '../styles/QuizViewStyles'
 
 class QuizView extends Component {
 
@@ -35,33 +38,6 @@ class QuizView extends Component {
         if (currentQuestionNumber !== deck.questions.length) this.setState({ currentQuestionNumber: (currentQuestionNumber + 1) })
     }
 
-    showCard = () => {
-        const { deck, currentQuestionNumber, showAnswer } = this.state
-        currentQuestion = deck.questions[currentQuestionNumber],
-            { guessCorrect, guessIncorrect } = this
-
-        return (
-            <View>
-                <Text>{currentQuestionNumber + 1}/{deck.questions.length}</Text>
-                <Text>{currentQuestion.question}</Text>
-                {
-                    showAnswer ?
-                        <Text>{currentQuestion.answer}</Text>
-                        :
-                        <TouchableOpacity onPress={this.showAnswer}>
-                            <Text>Answer</Text>
-                        </TouchableOpacity>
-                }
-                <TouchableOpacity onPress={guessCorrect}>
-                    <Text>Correct</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={guessIncorrect}>
-                    <Text>Incorrect</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
-
     restartQuiz = () => this.setState({
         currentQuestionNumber: 0,
         correctGuess: 0,
@@ -69,20 +45,60 @@ class QuizView extends Component {
         showAnswer: false
     })
 
+    showCard = () => {
+        const { deck, currentQuestionNumber, showAnswer } = this.state,
+            currentQuestion = deck.questions[currentQuestionNumber],
+            { guessCorrect, guessIncorrect } = this
+
+        const { container, subContainer, question, cards, answer, showAnswerText, button, correct, incorrect } = QuizViewStyles
+        
+        return (
+            <View style={container}>
+                <View style={subContainer}>
+                    <Text style={cards}>
+                        {currentQuestionNumber + 1}/{deck.questions.length}
+                    </Text>
+                    <Text style={question}>{currentQuestion.question}</Text>
+                    {
+                        showAnswer ?
+                        <Text style={answer}>{currentQuestion.answer}</Text>
+                        :
+                        <TouchableOpacity onPress={this.showAnswer}>
+                                <Text style={showAnswerText}>Answer</Text>
+                            </TouchableOpacity>
+                    }
+                </View>
+                <View style={subContainer}>
+                    <TouchableOpacity onPress={guessCorrect}>
+                        <Text style={[button, correct]}>Correct</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={guessIncorrect}>
+                        <Text style={[button, incorrect]}>Incorrect</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }
+    
     showResults = () => {
-        const { correctGuess, incorrectGuess, deck: { title } } = this.state
+        const { correctGuess, incorrectGuess, deck: { title } } = this.state,
+            { container, subContainer, question, cards, answer, showAnswerText, button, correct, incorrect } = QuizViewStyles
 
         return (
-            <View>
-                <Text style={{ fontSize: 30 }}>Quiz Results!</Text>
-                <Text style={{ fontSize: 30 }}>Correct answers: {correctGuess}</Text>
-                <Text style={{ fontSize: 30 }}>Incorrect answers: {incorrectGuess}</Text>
-                <TouchableOpacity onPress={this.restartQuiz}>
-                    <Text>Restart Quiz</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck', { title })}>
-                    <Text>Go Back to Deck</Text>
-                </TouchableOpacity>
+            <View style={container}>
+                <View style={subContainer}>
+                    <Text style={{ fontSize: 30 }}>Quiz Results!</Text>
+                    <Text style={{ fontSize: 30 }}>Correct answers: {correctGuess}</Text>
+                    <Text style={{ fontSize: 30 }}>Incorrect answers: {incorrectGuess}</Text>
+                </View>
+                <View style={subContainer}>
+                    <TouchableOpacity onPress={this.restartQuiz}>
+                        <Text style={button}>Restart Quiz</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck', { title })}>
+                        <Text style={button}>Go Back to Deck</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -92,18 +108,7 @@ class QuizView extends Component {
             finished = (this.state.deck.questions.length === currentQuestionNumber),
             { showCard, showResults } = this
 
-        //const { decksStyle, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
-
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                {
-                    (!finished) ?
-                        showCard()
-                        :
-                        showResults()
-                }
-            </View>
-        )
+        return (!finished) ? showCard() : showResults()
     }
 }
 

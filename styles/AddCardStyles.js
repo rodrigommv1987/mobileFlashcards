@@ -3,25 +3,27 @@ import { primary, secondary, tertiary } from "../styles/_sharedStyles";
 
 const AddCardStyles = StyleSheet.create({
     container: {
-        flex:1,
-        justifyContent: 'center',
-        alignItems: 'stretch',
+        flex: 1,
         backgroundColor:secondary
     },
-    deckItemStyle:{
-        backgroundColor:tertiary,
+    subContainer: {
+        flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'stretch',
         marginLeft:45,
         marginRight:45,
-        marginTop:25,
-        paddingTop:15,
-        paddingBottom:15,
-        borderRadius: 7
     },
-    deckItemTextStyle:{
+    textInput:{
+        height:65,
+    },
+    button:{
+        width:200,
+        textAlign:'center',
+        textAlignVertical:'center',
+        backgroundColor:tertiary,
+        borderRadius:7,
         height:50,
-        fontSize: 22,
+        marginBottom:15
     }
 })
 

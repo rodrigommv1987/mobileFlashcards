@@ -1,13 +1,14 @@
+//react
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, ToastAndroid, Keyboard } from 'react-native'
+
+//style
 import NewDeckViewStyles from '../styles/NewDeckViewStyles'
+
+//utils
 import { getDecks as APIgetDecks, saveDeckTitle as APIsaveDeckTitle } from "../utils/api";
 
 class NewDeckView extends Component {
-
-    static navigationOptions = {
-        title: 'Add Deck',
-    }
 
     constructor(props) {
         super(props);
@@ -20,12 +21,20 @@ class NewDeckView extends Component {
         }
     }
 
+    componentWillReceiveProps({ screenProps }) {
+
+        const { decks } = screenProps
+
+        //if deck in nextProps has different amount of keys, update state
+        if (Object.keys(decks).length !== Object.keys(this.state.decks).length) this.setState({ decks })
+    }
+
     cleanState() {
         this.setState({ newDeckName: '' })
     }
 
     addNewDeck = () => {
-        const { newDeckName } = this.state,
+        const { newDeckName, decks } = this.state,
             { updateDeckState } = this.props.screenProps
 
         if (newDeckName === '') {
@@ -33,20 +42,26 @@ class NewDeckView extends Component {
             return
         }
 
-        //save deck to asyncstorage
-        APIsaveDeckTitle(newDeckName).then(() => {
-            //get fresh copy of all decks
-            APIgetDecks().then(decks => {
-                //save decks to internal state
-                updateDeckState(decks)
-                this.cleanState()
-                Keyboard.dismiss()
-                ToastAndroid.show('Deck saved!', ToastAndroid.SHORT)
-                //route to newly created deck
-                this.props.navigation.navigate('Deck', { title:newDeckName })
+        if (decks[newDeckName]) {
+            ToastAndroid.show(`Deck ${newDeckName} already exists, please select other name.`, ToastAndroid.SHORT)
+            return
+        }
+        else {
+            //save deck to asyncstorage
+            APIsaveDeckTitle(newDeckName).then(() => {
+                //get fresh copy of all decks
+                APIgetDecks().then(freshDecks => {
+                    //save decks to internal state
+                    updateDeckState(freshDecks, () => {
+                        this.cleanState()
+                        Keyboard.dismiss()
+                        ToastAndroid.show('Deck saved!', ToastAndroid.SHORT)
+                        //route to newly created deck
+                        this.props.navigation.navigate('Deck', { title: newDeckName })
+                    })
+                })
             })
-        })
-
+        }
     }
 
     render() {
@@ -55,7 +70,7 @@ class NewDeckView extends Component {
 
         return (
             <View style={container}>
-                <Text style={title}>New Deck Name:</Text>
+                <Text style={title}>Enter Deck Name:</Text>
                 <TextInput
                     style={input}
                     value={newDeckName}

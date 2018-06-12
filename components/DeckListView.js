@@ -1,6 +1,6 @@
 //react
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 
 //style
 import DeckListViewStyles from '../styles/DeckListViewStyles'
@@ -25,26 +25,33 @@ class DeckListView extends Component {
         if (Object.keys(decks).length !== Object.keys(this.state.decks).length) this.setState({ decks })
     }
 
+    renderDeck = ({ item: deck }) => {
+        const { title, questions } = deck,
+            { deckItemStyle, deckItemTextStyle } = DeckListViewStyles
+
+        return (
+            <TouchableOpacity
+                key={title}
+                style={deckItemStyle}
+                onPress={() => this.props.navigation.navigate('Deck', { title })}>
+
+                <Text style={deckItemTextStyle}>{title}</Text>
+                <Text>{`${questions.length} cards`}</Text>
+            </TouchableOpacity>
+        )
+    }
+
     render() {
         const { decks } = this.state
-        const { container, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
+        const { container } = DeckListViewStyles
 
         return (
             <View style={container}>
-                {decks && Object.keys(decks).map(deck => {
-                    const { title, questions } = decks[deck]
-
-                    return (
-                        <TouchableOpacity
-                            key={title}
-                            style={deckItemStyle}
-                            onPress={() => this.props.navigation.navigate('Deck', { title })}>
-
-                            <Text style={deckItemTextStyle}>{title}</Text>
-                            <Text>{`${questions.length} cards`}</Text>
-                        </TouchableOpacity>
-                    )
-                })}
+                {decks && <FlatList
+                    data={Object.keys(decks).map(deck => decks[deck])}
+                    keyExtractor={(item, index) => item.title}
+                    renderItem={this.renderDeck}
+                />}
             </View>
         )
     }

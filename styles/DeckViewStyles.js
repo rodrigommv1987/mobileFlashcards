@@ -1,21 +1,37 @@
 import { StyleSheet } from 'react-native'
-import { orange } from "../utils/colors";
+import { primary, secondary, tertiary } from "../styles/_sharedStyles";
 
 const DeckViewStyles = StyleSheet.create({
-    decksStyle: {
-        flex:1,
+    container: {
+        flex: 1,
+        backgroundColor:secondary
+    },
+    subContainer: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
     deckItemStyle:{
-        backgroundColor:orange,
+        backgroundColor:secondary,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:10
     },
-    deckItemTextStyle:{
+    deckName:{
+        fontSize: 35,
+    },
+    deckCards:{
+        fontSize: 25,
+        color: "#888888"
+    },
+    button:{
+        width:200,
+        textAlign:'center',
+        textAlignVertical:'center',
+        backgroundColor:tertiary,
+        borderRadius:7,
         height:50,
-        fontSize: 22,
+        marginBottom:15
     }
 })
 

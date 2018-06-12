@@ -1,5 +1,8 @@
+//react
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, ToastAndroid } from 'react-native'
+
+//style
 import DeckViewStyles from '../styles/DeckViewStyles'
 
 class DeckView extends Component {
@@ -30,23 +33,28 @@ class DeckView extends Component {
 
     render() {
         const { deck } = this.state
-        //const { decksStyle, deckItemStyle, deckItemTextStyle } = DeckListViewStyles
+        const { container, deckName, deckCards, button, subContainer } = DeckViewStyles
         return (
-            <View>
-                <Text>DeckView for {deck.title}</Text>
-                <Text>{deck.questions.length} cards</Text>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddCardView', { title: deck.title })}>
-                    <Text>Add Card</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    (deck.questions.length > 0) ?
-                        this.props.navigation.navigate('QuizView', { deck })
-                        :
-                        ToastAndroid.show('Please, add at least one card to start.', ToastAndroid.SHORT)
-                }
-                }>
-                    <Text>Start Quiz!</Text>
-                </TouchableOpacity>
+            <View style={container}>
+                <View style={subContainer}>
+                    <Text style={deckName}>{deck.title}</Text>
+                    <Text style={deckCards}>{deck.questions.length} cards</Text>
+                </View>
+
+                <View style={subContainer}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('AddCardView', { title: deck.title })}>
+                        <Text style={button}>Add Card</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        (deck.questions.length > 0) ?
+                            this.props.navigation.navigate('QuizView', { deck })
+                            :
+                            ToastAndroid.show('Please, add at least one card to start.', ToastAndroid.SHORT)
+                    }
+                    }>
+                        <Text style={button}>Start Quiz!</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }

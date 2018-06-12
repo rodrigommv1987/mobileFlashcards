@@ -14,7 +14,8 @@ const DeckListViewStyles = StyleSheet.create({
         alignItems: 'center',
         marginLeft:45,
         marginRight:45,
-        marginTop:25,
+        marginTop:15,
+        marginBottom:15,
         paddingTop:15,
         paddingBottom:15,
         borderRadius: 7

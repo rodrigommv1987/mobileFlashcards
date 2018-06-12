@@ -51,7 +51,6 @@ const Tabs = createMaterialBottomTabNavigator(
         }
     },
     {
-        initialRouteName :"ScheduleNotification",
         shifting:true,
         tabBarOptions: { showIcon: true },        
         barStyle: AppStyles.tabBar,
@@ -93,7 +92,7 @@ export default class App extends React.Component {
     }
 
     componentDidMount = () => {
-        initScheduler();
+        initScheduler()
         getDecks().then(decks => this.setState({ decks }))
     }
 
@@ -113,26 +112,6 @@ export default class App extends React.Component {
                     decks,
                     updateDeckState: this.updateDeckState
                 }} />}
-                
-                {/*
-
-                <TouchableOpacity onPress={() => {
-                    console.log(new Date())
-                }}>
-                    <Text>check date</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    AsyncStorage.getItem("mobileFlashcards_notification").then(data => {
-                        console.log(data)
-                    })
-                }}>
-                    <Text>check notification</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={clearLocalNotification}>
-                    <Text>clear all notifications</Text>
-                </TouchableOpacity>
-            
-                */}
             </View>
         )
     }
