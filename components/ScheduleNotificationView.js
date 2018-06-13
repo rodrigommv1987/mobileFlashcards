@@ -9,7 +9,7 @@ import ScheduleNotificationStyle from '../styles/ScheduleNotificationStyle'
 import { NOTIFICATION_DEFAULT } from "../config"
 
 //utils
-import { getNotificationData, setLocalNotification } from "../utils/api";
+import { getNotificationData, setLocalNotification, saveNotificationConfig } from "../utils/api";
 
 class ScheduleNotificationView extends Component {
 
@@ -22,9 +22,9 @@ class ScheduleNotificationView extends Component {
     componentDidMount() {
         getNotificationData().then(nData => {
             nData.notificationSet ? this.setState({
-                hour: nData.hour,
-                minute: nData.minute,
-                startTomorrow: nData.startTomorrow
+                hour: nData.nextNotification.hour,
+                minute: nData.nextNotification.minute,
+                startTomorrow: nData.nextNotification.startTomorrow
             }) : this.setState({ NOTIFICATION_DEFAULT })
         })
     }
@@ -73,11 +73,13 @@ class ScheduleNotificationView extends Component {
                     />
                 </View>
                 <View style={row}>
-                    <TouchableOpacity onPress={() => setLocalNotification({
-                        hour: this.state.hour,
-                        minute: this.state.minute,
-                        startTomorrow: this.state.startTomorrow
-                    }, true)}>
+                    <TouchableOpacity onPress={() => {
+                        saveNotificationConfig({
+                            hour: this.state.hour,
+                            minute: this.state.minute,
+                            startTomorrow: this.state.startTomorrow
+                        }).then(setLocalNotification)
+                    }}>
                         <Text style={save}>Save</Text>
                     </TouchableOpacity>
                 </View>

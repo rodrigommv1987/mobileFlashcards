@@ -5,6 +5,9 @@ import { View, Text, TouchableOpacity } from 'react-native'
 //style
 import QuizViewStyles from '../styles/QuizViewStyles'
 
+//utils
+import { getNotificationData, setLocalNotification } from "../utils/api";
+
 class QuizView extends Component {
 
     constructor(props) {
@@ -17,6 +20,14 @@ class QuizView extends Component {
             correctGuess: 0,
             incorrectGuess: 0
         }
+    }
+
+    componentDidMount() {
+        //since today the user has already studied, schedule a reminder for tomorrow
+        getNotificationData().then(nData => {
+            nData.nextNotification.startTomorrow = true
+            setLocalNotification(nData.nextNotification)
+        })
     }
 
     showAnswer = () => this.setState({ showAnswer: true })

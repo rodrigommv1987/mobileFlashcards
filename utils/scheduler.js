@@ -1,12 +1,15 @@
-import { setLocalNotification, getNotificationData } from "./api"
+import { initNotifications, setLocalNotification, getNotificationData } from "./api"
 import { NOTIFICATION_DEFAULT } from "../config";
 
 export const initScheduler = () => {
     getNotificationData()
         .then(nData => {
-            (nData.hour && nData.minute) ?
-                setLocalNotification(nData)
-                :
-                setLocalNotification(NOTIFICATION_DEFAULT)
+            initNotifications(
+                ((!nData) || (!nData.config)) ?
+                    NOTIFICATION_DEFAULT
+                    :
+                    nData.config
+            )
+            .then(setLocalNotification)
         })
 }

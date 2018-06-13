@@ -1,6 +1,6 @@
 //react
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList ,AsyncStorage } from 'react-native'
 
 //style
 import DeckListViewStyles from '../styles/DeckListViewStyles'
