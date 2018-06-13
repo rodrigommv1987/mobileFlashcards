@@ -1,6 +1,6 @@
 //react
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Slider, Switch } from 'react-native'
+import { View, Text, TouchableOpacity, Slider, Switch, ToastAndroid } from 'react-native'
 
 //style
 import ScheduleNotificationStyle from '../styles/ScheduleNotificationStyle'
@@ -78,7 +78,9 @@ class ScheduleNotificationView extends Component {
                             hour: this.state.hour,
                             minute: this.state.minute,
                             startTomorrow: this.state.startTomorrow
-                        }).then(setLocalNotification)
+                        })
+                        .then(setLocalNotification)
+                        .then(() => ToastAndroid.show('Notification settings saved', ToastAndroid.SHORT))
                     }}>
                         <Text style={save}>Save</Text>
                     </TouchableOpacity>
