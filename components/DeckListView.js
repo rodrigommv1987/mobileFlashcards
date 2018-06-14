@@ -1,6 +1,6 @@
 //react
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList ,AsyncStorage } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 
 //style
 import DeckListViewStyles from '../styles/DeckListViewStyles'
@@ -23,6 +23,12 @@ class DeckListView extends Component {
 
         //if deck in nextProps has different amount of keys, update state
         if (Object.keys(decks).length !== Object.keys(this.state.decks).length) this.setState({ decks })
+        else {
+            //if any deck have a different amount of cards, update state
+            Object.keys(this.state.decks).map(deckName => {
+                if (this.state.decks[deckName].questions.length !== decks[deckName].questions.length) this.setState({ decks })
+            })
+        }
     }
 
     renderDeck = ({ item: deck }) => {

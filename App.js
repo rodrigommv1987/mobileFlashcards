@@ -1,11 +1,12 @@
 //react
-import React from 'react'
+import React, { Component } from 'react'
 import { View } from 'react-native'
 import { createStackNavigator } from 'react-navigation'
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 //style
 import AppStyles from './styles/AppStyles'
+import { black } from './styles/_sharedStyles'
 import { Foundation } from '@expo/vector-icons'
 
 //utils
@@ -51,8 +52,8 @@ const Tabs = createMaterialBottomTabNavigator(
         }
     },
     {
-        shifting:true,
-        tabBarOptions: { showIcon: true },        
+        shifting: true,
+        tabBarOptions: { showIcon: true },
         barStyle: AppStyles.tabBar,
     }
 )
@@ -77,7 +78,7 @@ const MainNavigator = createStackNavigator(
     {
         navigationOptions: {
             headerStyle: AppStyles.navigation,
-            headerTintColor: '#222',
+            headerTintColor: black,
             headerTitleStyle: {
                 fontWeight: 'bold'
             }
@@ -85,7 +86,7 @@ const MainNavigator = createStackNavigator(
     }
 )
 
-export default class App extends React.Component {
+export default class App extends Component {
 
     state = {
         decks: null

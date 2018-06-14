@@ -7,7 +7,7 @@
     "slug": "mobileFlashcards",
     "version": "1.0",
     "ios": {
-     "bundleIdentifier": "org.udacifitness.exp"
+     "bundleIdentifier": "org.mobileFlashcards.exp"
     },
     "android": {
      "package": "org.mobileFlashcards.exp"

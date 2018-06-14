@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { primary, secondary, tertiary } from "../styles/_sharedStyles";
+import { grey, secondary, tertiary } from "../styles/_sharedStyles";
 
 const QuizViewStyles = StyleSheet.create({
     container: {
@@ -15,7 +15,7 @@ const QuizViewStyles = StyleSheet.create({
     },
     cards: {
         fontSize: 18,
-        color: "#888888"
+        color: grey
     },
     question: {
         fontSize: 25,

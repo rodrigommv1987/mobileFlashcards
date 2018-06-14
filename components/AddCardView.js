@@ -1,9 +1,10 @@
 //react
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, TextInput, ToastAndroid } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ToastAndroid, KeyboardAvoidingView } from 'react-native'
 
 //style
 import AddCardStyles from '../styles/AddCardStyles'
+import { black } from '../styles/_sharedStyles'
 
 //utils
 import { addCardToDeck as APIaddCardToDeck, getDecks as APIgetDecks } from "../utils/api"
@@ -53,30 +54,30 @@ class AddCardView extends Component {
         const { container, subContainer, textInput, button } = AddCardStyles
 
         return (
-            <View style={container}>
+            <KeyboardAvoidingView behavior='padding' style={container}>
                 <View style={subContainer}>
                     <TextInput
                         style={textInput}
                         value={question}
                         placeholder="Enter question here..."
-                        placeholderTextColor="#222"
+                        placeholderTextColor={black}
                         onChangeText={(text) => this.setState({ question: text })}
                     />
                     <TextInput
                         style={textInput}
                         value={answer}
                         placeholder="Enter answer here..."
-                        placeholderTextColor="#222"
+                        placeholderTextColor={black}
                         onChangeText={(text) => this.setState({ answer: text })}
                     />
                 </View>
 
-                <View style={[subContainer, {alignSelf:'center'}]}>
+                <KeyboardAvoidingView behavior='padding' style={[subContainer, { alignSelf: 'center' }]}>
                     <TouchableOpacity onPress={this.addQuestionToDeck}>
                         <Text style={button}>Submit</Text>
                     </TouchableOpacity>
-                </View>
-            </View>
+                </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
         )
     }
 }
